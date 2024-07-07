@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Check for first run
         id: check_file
@@ -51,15 +53,6 @@ jobs:
     needs: check-and-update
     if: needs.check-and-update.outputs.is_first_run == 'false'
     runs-on: ubuntu-latest
-
-    env:
-      PROJECT_ID: paved-road-intuit
-      REGION: us-central1
-      IMAGE_NAME: bearhug
-      CLUSTER_NAME: bearhug-cluster
-      
-
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
