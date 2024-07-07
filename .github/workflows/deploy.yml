@@ -35,13 +35,13 @@ jobs:
           touch .github/workflows/first_run_completed
 
           # Remove the check-and-update job
-          sed -i '/^  check-and-update:/,/^  build-and-deploy:/d' .github/workflows/deploy-to-gcp.yml
+          sed -i '/^  check-and-update:/,/^  build-and-deploy:/d' .github/workflows/deploy.yml
           
           # Remove push and pull_request triggers
-          sed -i '/^on:/,/^jobs:/c\on:\n  workflow_dispatch:\n\njobs:' .github/workflows/deploy-to-gcp.yml
+          sed -i '/^on:/,/^jobs:/c\on:\n  workflow_dispatch:\n\njobs:' .github/workflows/deploy.yml
           
           # Remove the if condition from build-and-deploy job
-          sed -i '/^  build-and-deploy:/,/^    runs-on: ubuntu-latest/c\  build-and-deploy:\n    runs-on: ubuntu-latest' .github/workflows/deploy-to-gcp.yml
+          sed -i '/^  build-and-deploy:/,/^    runs-on: ubuntu-latest/c\  build-and-deploy:\n    runs-on: ubuntu-latest' .github/workflows/deploy.yml
                     
           git config user.name github-actions
           git config user.email github-actions@github.com
