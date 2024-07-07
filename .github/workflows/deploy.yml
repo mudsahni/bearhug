@@ -36,14 +36,14 @@ jobs:
           touch .github/workflows/first_run_completed
           
           # Remove the check-and-update job
-          sed -i '/check-and-update:/,/if: needs.check-and-update.outputs.is_first_run == '\''false'\''/d' .github/workflows/deploy-to-gcp.yml
+          sed -i '/check-and-update:/,/if: needs.check-and-update.outputs.is_first_run == '\''false'\''/d' .github/workflows/deploy.yml
           
           # Remove push and pull_request triggers
-          sed -i '/on:/,/workflow_dispatch:/c\on:\n  workflow_dispatch:' .github/workflows/deploy-to-gcp.yml
+          sed -i '/on:/,/workflow_dispatch:/c\on:\n  workflow_dispatch:' .github/workflows/deploy.yml
           
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add .github/workflows/first_run_completed .github/workflows/deploy-to-gcp.yml
+          git add .github/workflows/first_run_completed .github/workflows/deploy.yml
           git commit -m "Remove NOOP job, push/pull_request triggers, and mark first run as completed"
           git push
 
