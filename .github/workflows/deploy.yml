@@ -12,7 +12,44 @@ on:
   workflow_dispatch:
   
 jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    outputs:
+      is_first_run: ${{ steps.check_file.outputs.is_first_run }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check for first run
+        id: check_file
+        run: |
+          if [ -f .github/workflows/first_run_completed ]; then
+            echo "is_first_run=false" >> $GITHUB_OUTPUT
+          else
+            echo "is_first_run=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: NOOP and Update Workflow
+        if: steps.check_file.outputs.is_first_run == 'true'
+        run: |
+          echo "Performing NOOP operation for first run"
+          touch .github/workflows/first_run_completed
+          
+          # Remove the check-and-update job
+          sed -i '/check-and-update:/,/if: needs.check-and-update.outputs.is_first_run == '\''false'\''/d' .github/workflows/deploy-to-gcp.yml
+          
+          # Remove push and pull_request triggers
+          sed -i '/on:/,/workflow_dispatch:/c\on:\n  workflow_dispatch:' .github/workflows/deploy-to-gcp.yml
+          
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .github/workflows/first_run_completed .github/workflows/deploy-to-gcp.yml
+          git commit -m "Remove NOOP job, push/pull_request triggers, and mark first run as completed"
+          git push
+
   build-and-deploy:
+    needs: check-and-update
+    if: needs.check-and-update.outputs.is_first_run == 'false'
     runs-on: ubuntu-latest
 
     env:
