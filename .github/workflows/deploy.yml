@@ -160,7 +160,8 @@ jobs:
           -d "{\"timestamp\": \"$timestamp\", \"level\": \"info\", \"logger\": \"GithubAction\", \"message\":\"Terraform initialization compelte.\"}" \
           https://logmachine-nfxik62jwa-uc.a.run.app/api/v1/log
 
-    - name: terraform-apply
+    - name: Terraform Apploy
+      id: terraform-apply
       run: terraform apply -auto-approve -var "project_id=${{ env.PROJECT_ID }}" -var "region=${{ env.REGION }}" -var "image_name=gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_CONFIG }}
