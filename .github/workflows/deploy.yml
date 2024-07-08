@@ -35,7 +35,6 @@ jobs:
           touch .github/workflows/first_run_completed
           # Remove the check-and-update job
           sed -i '/^  check-and-update:/,/^  # End of section/d' .github/workflows/deploy.yml
-          ^# End of section/d
           # Remove push and pull_request triggers
           sed -i '/^on:/,/^jobs:/c\on:\n  workflow_dispatch:\n\njobs:' .github/workflows/deploy.yml
           
