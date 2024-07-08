@@ -39,9 +39,8 @@ jobs:
           sed -i '/^on:/,/^jobs:/c\on:\n  workflow_dispatch:\n\njobs:' .github/workflows/deploy.yml
           
           # Remove the needs and if conditions from build-and-deploy job
-          sed -i '/needs:/d' .github/workflows/your-workflow.yml
-          sed -i '/if:/d' .github/workflows/your-workflow.yml
-          # awk '/jobs:/{print; print "  build-and-deploy:\n    "; next}1' .github/workflows/deploy.yml > temp.yml && mv temp.yml .github/workflows/deploy.yml
+          sed -i '/needs:/d' .github/workflows/deploy.yml
+          sed -i '/if:/d' .github/workflows/deploy.yml
 
           git config user.name github-actions
           git config user.email github-actions@github.com
